@@ -13,6 +13,25 @@ from VariablesConfig import CompteFirebase # Import du fichier de config (pour l
 from GestionBuffer import TableauBuffer, AjouterItemBuffer, SupprimerVieilleValeurBuffer, LirePlusVieilleValeurBuffer, ViderBuffer # Import du module de gestion du buffer (en cas de perte du reseau)
 import ModuleLampe, ModuleJourAnnee
 
+# Il faut qu'il y ait 1 argument (SIMU / REEL)
+# Exemple de lancement du programme : python Main.py SIMU
+if len(sys.argv) != 2 :  # Il doit y avoir 1 parametre plus le nom du programme cela fait 2
+	print("Il n'y a pas assez de parametre. Exemple d'utilisation : Python Main.py SIMU")
+	exit(0)
+
+ModeSimulation=sys.argv[1]
+if ModeSimulation!="SIMU" and ModeSimulation!="REEL" :
+	print("Le 1er parametre doit etre SIMU pour un lancement simulant la lampe et REEL pour le mode entier")
+	exit(0)
+if ModeSimulation == "SIMU"  :
+	ParamModeSimu=True
+if ModeSimulation == "REEL"  :
+	ParamModeSimu=False
+
+# Initionalisation du systeme de gestion
+os.system('modprobe w1-gpio')
+os.system('modprobe w1-therm')
+
 # On initialise quelques variables pour rendre le programme paramétrable
 Interval=60*10  # Temps en seconde entre chaque vérification
 EtatLampe=False # On part du principe qu'au lancement la lumière est éteinte
@@ -26,7 +45,10 @@ DateDuJour = datetime.datetime.now()
 HoraireDuMoment="{:%H:%M}".format(DateDuJour)
 
 # Avant de commencer, on commence par eteindre la lampe (au cas où)
-EteindreLampe(NumPortGPIO)
+if ParamModeSimu==True :
+    print"Lampe : OFF")
+else :
+    EteindreLampe(NumPortGPIO)
 # On entre dans la boucle infinie
 i=0
 firebase = firebase.FirebaseApplication(CompteFirebase,None)
@@ -70,14 +92,20 @@ while 1==1 :
         EtatLampe=not EtatLampe
 	# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
 	if EtatLampe==True:
-        AllumerLampe(NumPortGPIO)
-        #VariableFirebase="/Lampe/1" + Chaine
+        if ParamModeSimu==True :
+            print"Lampe : ON")
+        else :
+            AllumerLampe(NumPortGPIO)
+
         Horodatage=datetime.datetime.now()
         firebase.put('/Lampe/1','Etat',1)
         firebase.put('/Lampe/1','Date',Horodatage)
     else:
-        EteindreLampe(NumPortGPIO)
-        #VariableFirebase="/Lampe/1" + Chaine
+        if ParamModeSimu==True :
+            print"Lampe : ON")
+        else :
+            EteindreLampe(NumPortGPIO)
+    
         Horodatage=datetime.datetime.now()
         firebase.put('/Lampe/1','Etat',0)
         firebase.put('/Lampe/1','Date',Horodatage)
