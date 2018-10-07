@@ -93,14 +93,14 @@ while 1==1 :
         EtatLampe=not EtatLampe
 	# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
 	if EtatLampe==True:
-        if ParamModeSimu==True :
-            print("Lampe : ON")
-        else :
-            AllumerLampe(NumPortGPIO)
+			if ParamModeSimu==True :
+            	print("Lampe : ON")
+        	else :
+            	AllumerLampe(NumPortGPIO)
 
-        Horodatage=datetime.datetime.now()
-        firebase.put('/Lampe/1','Etat',1)
-        firebase.put('/Lampe/1','Date',Horodatage)
+	        Horodatage=datetime.datetime.now()
+	        firebase.put('/Lampe/1','Etat',1)
+	        firebase.put('/Lampe/1','Date',Horodatage)
     else:
         if ParamModeSimu==True :
             print("Lampe : ON")
