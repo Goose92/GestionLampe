@@ -101,11 +101,11 @@ while 1==1 :
 	        Horodatage=datetime.datetime.now()
 	        firebase.put('/Lampe/1','Etat',1)
 	        firebase.put('/Lampe/1','Date',Horodatage)
-    else:
-        if ParamModeSimu==True :
-            print("Lampe : ON")
-        else :
-            EteindreLampe(NumPortGPIO)
+	else:
+                if ParamModeSimu==True :
+                        print("Lampe : ON")
+                else :
+                        EteindreLampe(NumPortGPIO)
 
         Horodatage=datetime.datetime.now()
         firebase.put('/Lampe/1','Etat',0)
