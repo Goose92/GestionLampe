@@ -13,6 +13,7 @@ from VariablesConfig import CompteFirebase # Import du fichier de config (pour l
 from GestionBuffer import TableauBuffer, AjouterItemBuffer, SupprimerVieilleValeurBuffer, LirePlusVieilleValeurBuffer, ViderBuffer # Import du module de gestion du buffer (en cas de perte du reseau)
 import ModuleLampe, ModuleJourAnnee
 
+
 # Il faut qu'il y ait 1 argument (SIMU / REEL)
 # Exemple de lancement du programme : python Main.py SIMU
 if len(sys.argv) != 2 :  # Il doit y avoir 1 parametre plus le nom du programme cela fait 2
