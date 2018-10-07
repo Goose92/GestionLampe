@@ -46,7 +46,7 @@ HoraireDuMoment="{:%H:%M}".format(DateDuJour)
 
 # Avant de commencer, on commence par eteindre la lampe (au cas où)
 if ParamModeSimu==True :
-    print"Lampe : OFF")
+    print("Lampe : OFF")
 else :
     EteindreLampe(NumPortGPIO)
 # On entre dans la boucle infinie
@@ -93,7 +93,7 @@ while 1==1 :
 	# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
 	if EtatLampe==True:
         if ParamModeSimu==True :
-            print"Lampe : ON")
+            print("Lampe : ON")
         else :
             AllumerLampe(NumPortGPIO)
 
@@ -102,10 +102,10 @@ while 1==1 :
         firebase.put('/Lampe/1','Date',Horodatage)
     else:
         if ParamModeSimu==True :
-            print"Lampe : ON")
+            print("Lampe : ON")
         else :
             EteindreLampe(NumPortGPIO)
-    
+
         Horodatage=datetime.datetime.now()
         firebase.put('/Lampe/1','Etat',0)
         firebase.put('/Lampe/1','Date',Horodatage)
