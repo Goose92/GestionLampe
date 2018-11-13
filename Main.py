@@ -75,37 +75,37 @@ while 1==1 :
 	#On peut à présent regarder si on est dans une période de nuit ou de jour
 	Nuit=False
 	if NbMinutesDuMoment < NbMinutesLeve:
-	Nuit=True
-	Moment="Matin"
+		Nuit=True
+		Moment="Matin"
 	else:
-	if NbMinutesDuMoment < NbMinutesCouche:
-	    Nuit=False
-	    Moment="Journee"
-	else:
-	    Nuit=True
-	    Moment="Soir"
+		if NbMinutesDuMoment < NbMinutesCouche:
+		    Nuit=False
+		    Moment="Journee"
+		else:
+		    Nuit=True
+		    Moment="Soir"
 	# On peut à présent regarde l'état de la lampe et activer l'interrupteur qu'en cas de changement
 	if EtatLampe==Nuit:
-	#print("On ne change pas l'état de la lampe")
-	i=i
+		#print("On ne change pas l'état de la lampe")
+		i=i
 	else:
-	#print("On change l'etat de la lampe")
-	EtatLampe=not EtatLampe
-	# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
-	if EtatLampe==True:
-		if ParamModeSimu==True :
-			print("Lampe : ON")
-		else :
-			AllumerLampe(NumPortGPIO)
+		#print("On change l'etat de la lampe")
+		EtatLampe=not EtatLampe
+		# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
+		if EtatLampe==True:
+			if ParamModeSimu==True :
+				print("Lampe : ON")
+			else :
+				AllumerLampe(NumPortGPIO)
 
-		Horodatage=datetime.datetime.now()
-		firebase.put('/Lampe/1','Etat',1)
-		firebase.put('/Lampe/1','Date',Horodatage)
-	else:
-		if ParamModeSimu==True :
-			print("Lampe : ON")
-		else :
-			EteindreLampe(NumPortGPIO)
+			Horodatage=datetime.datetime.now()
+			firebase.put('/Lampe/1','Etat',1)
+			firebase.put('/Lampe/1','Date',Horodatage)
+		else:
+			if ParamModeSimu==True :
+				print("Lampe : ON")
+			else :
+				EteindreLampe(NumPortGPIO)
 
 	Horodatage=datetime.datetime.now()
 	firebase.put('/Lampe/1','Etat',0)
