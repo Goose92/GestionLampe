@@ -55,62 +55,63 @@ i=0
 firebase = firebase.FirebaseApplication(CompteFirebase,None)
     # On commence par récupérer la position du jour en cours dans l'année
 while 1==1 :
-    DateDuJour = datetime.datetime.now()
-    HoraireDuMoment="{:%H:%M}".format(DateDuJour)
-    NumeroDuJour=numjouran([DateDuJour.day, DateDuJour.month, DateDuJour.year])
-    #NumeroDuJour=1     # Pour l'essai, on positionne le numero à 1
-    # On récupère les valeurs du levé et couché pour le jour correspondand dans le tableau
-    HoraireLeveSoleil=TableauSoleil[NumeroDuJour][0]
-    HeureLeve=int(HoraireLeveSoleil[0:2])
-    MinuteLeve=int(HoraireLeveSoleil[3:5])
-    HoraireCoucheSoleil=TableauSoleil[NumeroDuJour][1]
-    HeureCouche=int(HoraireCoucheSoleil[0:2])
-    MinuteCouche=int(HoraireCoucheSoleil[3:5])
-    HeureDuMoment=int(HoraireDuMoment[0:2])
-    MinuteDuMoment=int(HoraireDuMoment[3:5])
-    NbMinutesLeve=int(HeureLeve*60+MinuteLeve)
-    NbMinutesCouche=int(HeureCouche*60+MinuteCouche)
-    NbMinutesDuMoment=int(HeureDuMoment*60+MinuteDuMoment)
-    Moment=""
-    #On peut à présent regarder si on est dans une période de nuit ou de jour
-    Nuit=False
-    if NbMinutesDuMoment < NbMinutesLeve:
-        Nuit=True
-        Moment="Matin"
-    else:
-        if NbMinutesDuMoment < NbMinutesCouche:
-            Nuit=False
-            Moment="Journee"
-        else:
-            Nuit=True
-            Moment="Soir"
-    # On peut à présent regarde l'état de la lampe et activer l'interrupteur qu'en cas de changement
-    if EtatLampe==Nuit:
-        #print("On ne change pas l'état de la lampe")
-        i=i
-    else:
-        #print("On change l'etat de la lampe")
-        EtatLampe=not EtatLampe
+	DateDuJour = datetime.datetime.now()
+	HoraireDuMoment="{:%H:%M}".format(DateDuJour)
+	NumeroDuJour=numjouran([DateDuJour.day, DateDuJour.month, DateDuJour.year])
+	#NumeroDuJour=1     # Pour l'essai, on positionne le numero à 1
+	# On récupère les valeurs du levé et couché pour le jour correspondand dans le tableau
+	HoraireLeveSoleil=TableauSoleil[NumeroDuJour][0]
+	HeureLeve=int(HoraireLeveSoleil[0:2])
+	MinuteLeve=int(HoraireLeveSoleil[3:5])
+	HoraireCoucheSoleil=TableauSoleil[NumeroDuJour][1]
+	HeureCouche=int(HoraireCoucheSoleil[0:2])
+	MinuteCouche=int(HoraireCoucheSoleil[3:5])
+	HeureDuMoment=int(HoraireDuMoment[0:2])
+	MinuteDuMoment=int(HoraireDuMoment[3:5])
+	NbMinutesLeve=int(HeureLeve*60+MinuteLeve)
+	NbMinutesCouche=int(HeureCouche*60+MinuteCouche)
+	NbMinutesDuMoment=int(HeureDuMoment*60+MinuteDuMoment)
+	Moment=""
+	#On peut à présent regarder si on est dans une période de nuit ou de jour
+	Nuit=False
+	if NbMinutesDuMoment < NbMinutesLeve:
+	Nuit=True
+	Moment="Matin"
+	else:
+	if NbMinutesDuMoment < NbMinutesCouche:
+	    Nuit=False
+	    Moment="Journee"
+	else:
+	    Nuit=True
+	    Moment="Soir"
+	# On peut à présent regarde l'état de la lampe et activer l'interrupteur qu'en cas de changement
+	if EtatLampe==Nuit:
+	#print("On ne change pas l'état de la lampe")
+	i=i
+	else:
+	#print("On change l'etat de la lampe")
+	EtatLampe=not EtatLampe
 	# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
 	if EtatLampe==True:
 		if ParamModeSimu==True :
-                        print("Lampe : ON")
-        	else :
-                        AllumerLampe(NumPortGPIO)
+			print("Lampe : ON")
+		else :
+			AllumerLampe(NumPortGPIO)
 
-	        Horodatage=datetime.datetime.now()
-	        firebase.put('/Lampe/1','Etat',1)
-	        firebase.put('/Lampe/1','Date',Horodatage)
+		Horodatage=datetime.datetime.now()
+		firebase.put('/Lampe/1','Etat',1)
+		firebase.put('/Lampe/1','Date',Horodatage)
 	else:
-                if ParamModeSimu==True :
-                        print("Lampe : ON")
-                else :
-                        EteindreLampe(NumPortGPIO)
+		if ParamModeSimu==True :
+			print("Lampe : ON")
+		else :
+			EteindreLampe(NumPortGPIO)
 
-        Horodatage=datetime.datetime.now()
-        firebase.put('/Lampe/1','Etat',0)
-        firebase.put('/Lampe/1','Date',Horodatage)
-    print(DateDuJour.day,DateDuJour.month, DateDuJour.year,"(",NumeroDuJour,")",HoraireDuMoment,"(",HoraireLeveSoleil,"/",HoraireCoucheSoleil,")",Moment,EtatLampe)
+	Horodatage=datetime.datetime.now()
+	firebase.put('/Lampe/1','Etat',0)
+	firebase.put('/Lampe/1','Date',Horodatage)
+	print(DateDuJour.day,DateDuJour.month, DateDuJour.year,"(",NumeroDuJour,")",HoraireDuMoment,"(",HoraireLeveSoleil,"/",HoraireCoucheSoleil,")",Moment,EtatLampe)
 
-    i=i+1
-    time.sleep(Interval)
+	i=i+1
+	time.sleep(Interval)
+
