@@ -93,7 +93,7 @@ while 1==1 :
         EtatLampe=not EtatLampe
 	# On appelle la fonction de gestion de la lampe en fonction de l'etat de la variable
 	if EtatLampe==True:
-                if ParamModeSimu==True :
+		if ParamModeSimu==True :
                         print("Lampe : ON")
         	else :
                         AllumerLampe(NumPortGPIO)
